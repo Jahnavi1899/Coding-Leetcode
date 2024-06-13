@@ -1,31 +1,31 @@
-class Node:
-     def __init__(self, val, left=None, right=None):
-          self.val = val
-          self.left = left
-          self.right = right
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-def diameterOfBinaryTree(root):
-     max_height = 0
-     
+class Solution:
+    def diameterOfBinaryTree(self, root) -> int:
+        max_path = [0]
+        self.calculateHeight(root, max_path)
+        return max_path
+        
 
-# def diameterOfBinaryTree(root):
-#     max_path = 0
-#     dfs(root, max_path)
-#     return max_path
-
-# def dfs(root, max_path):
-#     if not root:
-#         return 0
-#     left = dfs(root.left, max_path)
-#     right = dfs(root.right, max_path)
-#     max_path = max(max_path, left+right)
-#     return 1 + max(left, right)
-
-
-root = Node(1)
-root.left = Node(2)
-root.right = Node(3)
-root.left.left = Node(4)
-root.left.right = Node(5)
-
-print(diameterOfBinaryTree(root))
+    def calculateHeight(self, root, max_path):
+        if root:
+            lh = self.calculateHeight(root.left, max_path)
+            rh = self.calculateHeight(root.right, max_path)
+            max_path[0] = max(max_path[0], lh+rh)
+            return max(lh, rh) + 1
+        else:
+            return 0
+        
+tree = TreeNode(1)
+tree.left = TreeNode(2)
+tree.right = TreeNode(3)
+tree.left.left = TreeNode(4)
+tree.left.right = TreeNode(5)
+        
+obj = Solution()
+print(obj.diameterOfBinaryTree(tree))
