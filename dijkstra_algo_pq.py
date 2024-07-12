@@ -15,7 +15,7 @@ def dijstra_algo(source, graph):
     heapq.heappush(priority_queue, (0, source))
     dist[source] = 0
 
-    while priority_queue:
+    while priority_queue: # run V times 
         min_dist, node = heapq.heappop(priority_queue)
         for adj_node, weight in graph[node]:
             if dist[adj_node] > min_dist + weight:
