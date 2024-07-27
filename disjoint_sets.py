@@ -3,9 +3,9 @@ class DisjointSet :
     rank, parent = [], []
 
     def __init__(self, n):
-        self.rank = [0 for _ in range(n+1)]
-        self.parent = [0 for _ in range(n+1)]
-        for i in range(1, n+1):
+        self.rank = [0 for _ in range(n)]
+        self.parent = [0 for _ in range(n)]
+        for i in range(0, n):
             self.parent[i] = i
 
     # path compression 
@@ -33,18 +33,48 @@ class DisjointSet :
             self.parent[up_u] = self.parent[up_v]
             self.rank[up_u] += 1
 
-obj = DisjointSet(7)
-obj.unionByRank(1, 2)
-obj.unionByRank(2, 3)
-obj.unionByRank(4, 5)
-obj.unionByRank(6, 7)
-obj.unionByRank(5, 6)
-print(obj.findParent(3))
-print(obj.findParent(7))
-obj.unionByRank(3, 7)
+def KruskalAlgo(adjList):
+    # create a list of (weight, node1, node2)
+    edges = []
+    n = len(adjList)
+    # O(V+E)
+    for node1 in range(n):
+        for node2, weight in adjList[node1]:
+            edges.append([weight, node1, node2])
 
-print(obj.findParent(3))
-print(obj.findParent(7))
+    disjointSet = DisjointSet(n)
+    edges.sort() # O(log(V))
+    mstWeight = 0
+    res = []
+    # V * 4 * alpha
+    for weight, node1, node2 in edges:
+        if disjointSet.findParent(node1) != disjointSet.findParent(node2):
+            disjointSet.unionByRank(node1, node2)
+            mstWeight += weight
+            res.append([node1, node2])
+
+    return mstWeight, res
+
+        
+
+# obj = DisjointSet(7)
+# obj.unionByRank(1, 2)
+# obj.unionByRank(2, 3)
+# obj.unionByRank(4, 5)
+# obj.unionByRank(6, 7)
+# obj.unionByRank(5, 6)
+# print(obj.findParent(3))
+# print(obj.findParent(7))
+# obj.unionByRank(3, 7)
+
+# print(obj.findParent(3))
+# print(obj.findParent(7))
+
+adjList = [[[1,2],[3,1],[4,4]], [[0,2],[2,3],[3,3],[5,7]], [[1,3],[3,5],[5,8]], [[0,1],[1,3],[2,5],[4,9]], [[0,4],[3,9]], [[1,7], [2,8]]]
+weight, mst = KruskalAlgo(adjList)
+
+print(weight)
+print(mst)
 
         
 
